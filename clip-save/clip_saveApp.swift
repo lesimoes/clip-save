@@ -8,10 +8,13 @@
 import SwiftUI
 
 @main
-struct clip_saveApp: App {
+struct MenuBarApp: App {
+    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
     var body: some Scene {
-        WindowGroup {
-            ContentView()
+        Settings {
+            EmptyView()
         }
     }
 }
+
