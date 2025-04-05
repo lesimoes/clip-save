@@ -9,6 +9,4 @@
 
 - Save texts into the list
 - Copy or remove saved texts from the list
-- Drag and drop apps to create quick shortcuts
-- Right-click on a shortcut to remove it
-- Right-click the menu bar icon to quit the app
+- Drag and drop apps and files to create quick shortcuts
