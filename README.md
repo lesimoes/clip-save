@@ -3,7 +3,7 @@
 
 **ClipSave** is a lightweight macOS menu bar app that lets you quickly save texts, create app shortcuts, and access them with a single click.
 
-![Screenshot do app](https://github.com/lesimoes/ClipSave/blob/main/images/screenshot.png?raw=true)
+![Screenshot do app](https://github.com/lesimoes/clip-save/blob/main/images/screenshot.png?raw=true)
 
 ## Features
 
