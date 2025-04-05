@@ -24,10 +24,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             button.sendAction(on: [.leftMouseUp, .rightMouseUp]) // Detecta clique esquerdo e direito
         }
 
-        // Configura o popover
         let contentView = ContentView()
         popover.contentSize = NSSize(width: 250, height: 400)
-        popover.behavior = .transient
+        popover.behavior = .applicationDefined
         popover.contentViewController = NSHostingController(rootView: contentView)
     }
 
