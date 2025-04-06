@@ -21,7 +21,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             button.image = NSImage(systemSymbolName: "paperclip", accessibilityDescription: "App")
             button.action = #selector(togglePopover(_:))
             button.target = self
-            button.sendAction(on: [.leftMouseUp, .rightMouseUp]) // Detecta clique esquerdo e direito
+            button.sendAction(on: [.leftMouseUp, .rightMouseUp])
         }
 
         let contentView = ContentView()
@@ -50,9 +50,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func showContextMenu() {
         let menu = NSMenu()
 
+        let aboutItem = NSMenuItem(title: "About", action: #selector(aboutPopup), keyEquivalent: "")
+        aboutItem.target = self;
+        menu.addItem(aboutItem)
+        
         let exitItem = NSMenuItem(title: "Exit", action: #selector(exitApp), keyEquivalent: "")
         exitItem.target = self
         menu.addItem(exitItem)
+        
 
         if let button = statusItem?.button {
             NSMenu.popUpContextMenu(menu, with: NSApp.currentEvent!, for: button)
@@ -61,6 +66,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @objc func exitApp() {
         NSApp.terminate(nil)
+    }
+    
+    @objc func aboutPopup() {
+        let aboutPopup = NSWindow(
+            contentRect: NSRect(x:0, y:0, width: 300, height: 180),
+            styleMask: [.titled, .closable],
+            backing: .buffered,
+            defer: false
+        )
+        
+        aboutPopup.center()
+        aboutPopup.title = "About"
+        aboutPopup.isReleasedWhenClosed = false;
+        aboutPopup.contentView = NSHostingView(rootView: AboutView())
+        aboutPopup.makeKeyAndOrderFront(nil)
     }
 }
 
