@@ -14,7 +14,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var popover = NSPopover()
 
     func applicationDidFinishLaunching(_ notification: Notification) {
-        // Cria o item na barra de menu
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
 
         if let button = statusItem?.button {
@@ -48,6 +47,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func showContextMenu() {
+        popover.close()
         let menu = NSMenu()
 
         let aboutItem = NSMenuItem(title: "About", action: #selector(aboutPopup), keyEquivalent: "")
@@ -70,7 +70,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     @objc func aboutPopup() {
         let aboutPopup = NSWindow(
-            contentRect: NSRect(x:0, y:0, width: 300, height: 180),
+            contentRect: NSRect(x:0, y:0, width: 300, height: 240),
             styleMask: [.titled, .closable],
             backing: .buffered,
             defer: false

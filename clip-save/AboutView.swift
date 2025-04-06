@@ -32,7 +32,7 @@ struct AboutView: View {
                 .font(.footnote)
         }
         .padding()
-        .frame(width: 280, height: 160)
+        .frame(width: 280, height: 240)
         
     }
 }
