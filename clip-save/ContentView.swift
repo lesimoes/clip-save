@@ -166,10 +166,17 @@ struct ContentView: View {
         let prefix = "sh:"
         let command = item.dropFirst(prefix.count).trimmingCharacters(in: .whitespacesAndNewlines)
 
+        // Escapa aspas para evitar quebra de script
+        let escapedCommand = command.replacingOccurrences(of: "\"", with: "\\\"")
+
         let script = """
         tell application "Terminal"
             activate
-            do script "\(command)"
+        end tell
+        delay 3
+        tell application "System Events"
+            keystroke "\(escapedCommand)"
+            key code 36 -- tecla Enter
         end tell
         """
 
@@ -177,7 +184,7 @@ struct ContentView: View {
         if let scriptObject = NSAppleScript(source: script) {
             scriptObject.executeAndReturnError(&error)
             if let error = error {
-                print("Error: \(error)")
+                print("Erro ao executar script: \(error)")
             }
         }
     }
