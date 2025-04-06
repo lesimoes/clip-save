@@ -45,9 +45,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             }
         }
     }
+    
+    func closePopover () {
+        popover.close()
+    }
 
     func showContextMenu() {
-        popover.close()
+        closePopover()
         let menu = NSMenu()
 
         let aboutItem = NSMenuItem(title: "About", action: #selector(aboutPopup), keyEquivalent: "")

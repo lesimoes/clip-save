@@ -32,6 +32,13 @@ struct ShortcutBarView: View {
                         } label: {
                             Label("Remove", systemImage: "trash")
                         }
+
+                        Button {
+                            let fileURL = URL(fileURLWithPath: shortcut.path)
+                            NSWorkspace.shared.activateFileViewerSelecting([fileURL])
+                        } label: {
+                            Label("Open Folder", systemImage: "folder")
+                        }
                     }
                 }
             }

@@ -32,7 +32,8 @@ struct ContentView: View {
             SavedTextListView(
                 inputText: $inputText,
                 savedTexts: $savedTexts,
-                onRunCommand: runTerminalCommand
+                onRunCommand: runTerminalCommand,
+                openWeb: openWeb
             )
 
             Spacer()
@@ -40,7 +41,7 @@ struct ContentView: View {
             ShortcutBarView(shortcuts: $shortcuts, onDrop: handleDrop)
         }
         .padding()
-        .frame(width: 250, height: 300)
+        .frame(width: 250, height: 320)
     }
 
     func addText() {
@@ -66,30 +67,55 @@ struct ContentView: View {
         }
         return true
     }
+    
+    func openWeb(_ item: String) {
+        var urlString = item.trimmingCharacters(in: .whitespacesAndNewlines)
+
+            if urlString.lowercased().hasPrefix("web:") {
+                urlString = String(urlString.dropFirst(4)).trimmingCharacters(in: .whitespacesAndNewlines)
+            }
+
+            if !urlString.hasPrefix("http://") && !urlString.hasPrefix("https://") {
+                urlString = "https://" + urlString
+            }
+
+            guard let url = URL(string: urlString), NSWorkspace.shared.open(url) else {
+                print("Erro: Invalid URL - \(urlString)")
+                return
+            }
+        
+    }
 
     func runTerminalCommand(_ item: String) {
-        let prefix = "sh:"
-        let command = item.dropFirst(prefix.count).trimmingCharacters(in: .whitespacesAndNewlines)
-        let escapedCommand = command.replacingOccurrences(of: "\"", with: "\\\"")
+        guard item.lowercased().hasPrefix("sh:") else { return }
 
-        let script = """
-        tell application "Terminal"
-            activate
-        end tell
-        delay 0.5
-        tell application "System Events"
-            keystroke "\(escapedCommand)"
-            key code 36
-        end tell
-        """
+           let command = item.dropFirst(3).trimmingCharacters(in: .whitespacesAndNewlines)
+               .replacingOccurrences(of: "\"", with: "\\\"") // escapa aspas
 
-        var error: NSDictionary?
-        if let scriptObject = NSAppleScript(source: script) {
-            scriptObject.executeAndReturnError(&error)
-            if let error = error {
-                print("Erro ao executar script: \(error)")
-            }
-        }
+           let appleScript = """
+           tell application "Terminal"
+               if not running then launch
+               activate
+           end tell
+
+           delay 0.8
+
+           tell application "System Events"
+               keystroke "\(command)"
+               key code 36
+           end tell
+           """
+
+           let process = Process()
+           process.executableURL = URL(fileURLWithPath: "/usr/bin/osascript")
+           process.arguments = ["-e", appleScript]
+
+           do {
+               try process.run()
+           } catch {
+               print("Erro ao executar AppleScript: \(error)")
+           }
+    
     }
 }
 
