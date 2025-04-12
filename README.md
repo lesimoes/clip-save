@@ -8,7 +8,9 @@
 
 ## How to use
 
-https://youtu.be/Meg_nb1YQe8
+[![Watch the video]](https://youtu.be/Meg_nb1YQe8)
+
+
 
 ## Features
 
