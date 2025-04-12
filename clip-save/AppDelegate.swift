@@ -21,13 +21,25 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             button.action = #selector(togglePopover(_:))
             button.target = self
             button.sendAction(on: [.leftMouseUp, .rightMouseUp])
+
+            // Adicione a subview de arrastar e soltar
+            let dropView = TrayDropView(frame: button.bounds)
+            dropView.onDropFile = { urls in
+                DispatchQueue.main.async {
+                    urls.forEach { url in
+                        ShortcutStorage.shared.addShortcut(url)
+                    }
+                }
+            }
+            button.addSubview(dropView)
         }
 
         let contentView = ContentView()
         popover.contentSize = NSSize(width: 250, height: 400)
-        popover.behavior = .applicationDefined
+        popover.behavior = .transient
         popover.contentViewController = NSHostingController(rootView: contentView)
     }
+
 
     @objc func togglePopover(_ sender: AnyObject?) {
         let event = NSApp.currentEvent

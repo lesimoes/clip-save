@@ -3,8 +3,7 @@ import AppKit
 import UniformTypeIdentifiers
 
 struct ShortcutBarView: View {
-    @Binding var shortcuts: [FileShortcut]
-    var onDrop: ([NSItemProvider]) -> Bool
+    @ObservedObject var storage = ShortcutStorage.shared
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -13,7 +12,7 @@ struct ShortcutBarView: View {
                 .foregroundColor(.secondary)
 
             HStack(spacing: 12) {
-                ForEach(shortcuts) { shortcut in
+                ForEach(storage.shortcuts) { shortcut in
                     Button {
                         NSWorkspace.shared.open(URL(fileURLWithPath: shortcut.path))
                     } label: {
@@ -27,17 +26,16 @@ struct ShortcutBarView: View {
                     }
                     .buttonStyle(PlainButtonStyle())
                     .contextMenu {
-                        Button(role: .destructive) {
-                            shortcuts.removeAll { $0 == shortcut }
-                        } label: {
-                            Label("Remove", systemImage: "trash")
-                        }
-
                         Button {
                             let fileURL = URL(fileURLWithPath: shortcut.path)
                             NSWorkspace.shared.activateFileViewerSelecting([fileURL])
                         } label: {
                             Label("Open Folder", systemImage: "folder")
+                        }
+                        Button(role: .destructive) {
+                            storage.shortcuts.removeAll { $0 == shortcut }
+                        } label: {
+                            Label("Remove", systemImage: "trash")
                         }
                     }
                 }
@@ -50,8 +48,19 @@ struct ShortcutBarView: View {
                     .stroke(style: StrokeStyle(lineWidth: 1, dash: [5]))
                     .foregroundColor(.gray.opacity(0.4))
             )
-            .onDrop(of: [UTType.fileURL.identifier], isTargeted: nil, perform: onDrop)
+            .onDrop(of: [UTType.fileURL.identifier], isTargeted: nil) { providers in
+                providers.forEach { provider in
+                    provider.loadItem(forTypeIdentifier: UTType.fileURL.identifier, options: nil) { (item, error) in
+                        DispatchQueue.main.async {
+                            if let data = item as? Data,
+                               let url = NSURL(absoluteURLWithDataRepresentation: data, relativeTo: nil) as URL? {
+                                ShortcutStorage.shared.addShortcut(url)
+                            }
+                        }
+                    }
+                }
+                return true
+            }
         }
     }
 }
-

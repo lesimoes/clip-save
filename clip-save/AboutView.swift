@@ -16,7 +16,7 @@ struct AboutView: View {
             Text("Clipsave")
                 .font(.title2)
                 .bold()
-            Text("Version 1.0.1")
+            Text("Version 2.0.1")
                 .font(.subheadline)
                 .foregroundColor(.secondary)
             Text("A simple free and open source app to save snippets, file and apps")

@@ -38,7 +38,7 @@ struct ContentView: View {
 
             Spacer()
 
-            ShortcutBarView(shortcuts: $shortcuts, onDrop: handleDrop)
+            ShortcutBarView()
         }
         .padding()
         .frame(width: 250, height: 320)
