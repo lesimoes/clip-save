@@ -8,8 +8,9 @@
 
 ## How to use
 
-[![Watch the video]](https://youtu.be/Meg_nb1YQe8)
 
+
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/Meg_nb1YQe8/0.jpg)](https://www.youtube.com/watch?v=Meg_nb1YQe8)
 
 
 ## Features
