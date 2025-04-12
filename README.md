@@ -5,8 +5,14 @@
 
 ![Screenshot do app](https://github.com/lesimoes/clip-save/blob/main/images/screenshot.png?raw=true)
 
+
+## How to use
+
+https://youtu.be/Meg_nb1YQe8
+
 ## Features
 
-- Save texts into the list
-- Copy or remove saved texts from the list
+- Save texts and webpage links
 - Drag and drop apps and files to create quick shortcuts
+
+
